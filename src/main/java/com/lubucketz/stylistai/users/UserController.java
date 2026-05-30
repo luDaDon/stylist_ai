@@ -18,8 +18,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody CreateUserRequest request) {
-        User user = supplier.create(request);
+    public ResponseEntity<UserResponse> create(@RequestBody CreateUserRequest request) {
+        UserResponse user = supplier.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }
