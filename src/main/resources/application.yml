@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/stylist_ai
     username: postgres
-    password: Coldiscope1!
+    password: {{PASSWORD}}
 
   jpa:
     hibernate:
