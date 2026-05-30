@@ -1,6 +1,5 @@
 package com.lubucketz.stylistai.users;
 
-import com.lubucketz.stylistai.config.PasswordConfig;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class UserService implements UserSupplier{
     }
 
     @Override
-    public User create(CreateUserRequest request){
+    public UserResponse create(CreateUserRequest request) {
         User user = new User();
 
         user.setId(UUID.randomUUID());
@@ -33,6 +32,32 @@ public class UserService implements UserSupplier{
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
 
-        return repository.save(user);
+        repository.save(user);
+
+        return createResponse(user);
+    }
+
+    @Override
+    public UserResponse login(LoginRequest request) {
+        User user = repository.findByEmail(request.email())
+                .orElseThrow();
+
+        boolean matches = encoder.matches(request.password(), user.getPassword());
+
+        if (!matches) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        return createResponse(user);
+    }
+
+    public UserResponse createResponse(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName()
+        );
     }
 }
