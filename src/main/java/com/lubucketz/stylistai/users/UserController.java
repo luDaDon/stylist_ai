@@ -1,9 +1,9 @@
 package com.lubucketz.stylistai.users;
 
 import com.lubucketz.stylistai.security.JwtSupplier;
+import com.lubucketz.stylistai.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +25,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody CreateUserRequest request) {
-        UserResponse user = supplier.create(request);
+    public ResponseEntity<User> create(@RequestBody CreateUserRequest request) {
+        User user = supplier.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-        UserResponse user = supplier.login(request);
+        User user = supplier.login(request);
         String token = jwtSupplier.generateToken(
                 user.email()
         );

@@ -1,5 +1,6 @@
 package com.lubucketz.stylistai.users;
 
+import com.lubucketz.stylistai.domain.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class UserService implements UserSupplier{
     }
 
     @Override
-    public UserResponse create(CreateUserRequest request) {
-        User user = new User();
+    public User create(CreateUserRequest request) {
+        UserEntity user = new UserEntity();
 
         user.setId(UUID.randomUUID());
         user.setUsername(request.username());
@@ -38,8 +39,8 @@ public class UserService implements UserSupplier{
     }
 
     @Override
-    public UserResponse login(LoginRequest request) {
-        User user = repository.findByEmail(request.email())
+    public User login(LoginRequest request) {
+        UserEntity user = repository.findByEmail(request.email())
                 .orElseThrow();
 
         boolean matches = encoder.matches(request.password(), user.getPassword());
@@ -51,8 +52,8 @@ public class UserService implements UserSupplier{
         return createResponse(user);
     }
 
-    public UserResponse createResponse(User user) {
-        return new UserResponse(
+    public User createResponse(UserEntity user) {
+        return new User(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),

@@ -1,6 +1,8 @@
 package com.lubucketz.stylistai.users;
 
+import com.lubucketz.stylistai.domain.User;
+
 public interface UserSupplier {
-    UserResponse create(CreateUserRequest request);
-    UserResponse login(LoginRequest request);
+    User create(CreateUserRequest request);
+    User login(LoginRequest request);
 }

@@ -1,5 +1,6 @@
 package com.lubucketz.stylistai.users;
 
+import com.lubucketz.stylistai.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,10 +46,10 @@ class UserServiceTest {
         when(passwordEncoder.encode("password123"))
                 .thenReturn("hashed-password");
 
-        when(repository.save(any(User.class)))
+        when(repository.save(any(UserEntity.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        UserResponse result = service.create(createRequest);
+        User result = service.create(createRequest);
 
         assertNotNull(result);
         assertEquals("lubucketz", result.username());
@@ -57,13 +58,13 @@ class UserServiceTest {
                 user.getPassword().equals("hashed-password")
         ));
 
-        verify(repository).save(any(User.class));
+        verify(repository).save(any(UserEntity.class));
     }
 
     @Test
     void shouldLoginSuccessfully() {
 
-        User user = new User();
+        UserEntity user = new UserEntity();
 
         user.setId(UUID.randomUUID());
         user.setEmail("lu@example.com");
@@ -80,7 +81,7 @@ class UserServiceTest {
                 "hashed-password"
         )).thenReturn(true);
 
-        UserResponse result = service.login(request);
+        User result = service.login(request);
 
         assertNotNull(result);
         assertEquals(user.getEmail(), result.email());
@@ -104,7 +105,7 @@ class UserServiceTest {
     @Test
     void shouldThrowWhenPasswordIsInvalid() {
 
-        User user = new User();
+        UserEntity user = new UserEntity();
 
         user.setEmail("lu@example.com");
         user.setPassword("hashed-password");

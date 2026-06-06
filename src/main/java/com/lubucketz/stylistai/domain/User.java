@@ -1,8 +1,8 @@
-package com.lubucketz.stylistai.users;
+package com.lubucketz.stylistai.domain;
 
 import java.util.UUID;
 
-public record UserResponse (
+public record User(
         UUID id,
         String username,
         String email,

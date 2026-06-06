@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class UserEntity {
 
     @Id
     private UUID id;
@@ -35,4 +34,5 @@ public class User {
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
+
 }
