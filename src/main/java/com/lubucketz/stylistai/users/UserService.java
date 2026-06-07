@@ -11,13 +11,16 @@ public class UserService implements UserSupplier{
 
     private final UserRepository repository;
     private final PasswordEncoder encoder;
+    private final UserMapper mapper;
 
     public UserService(
             UserRepository repository,
-            PasswordEncoder encoder
+            PasswordEncoder encoder,
+            UserMapper mapper
     ){
         this.repository = repository;
         this.encoder = encoder;
+        this.mapper = mapper;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class UserService implements UserSupplier{
 
         repository.save(user);
 
-        return createResponse(user);
+        return mapper.toDomain(user);
     }
 
     @Override
@@ -49,16 +52,6 @@ public class UserService implements UserSupplier{
             throw new RuntimeException("Invalid credentials");
         }
 
-        return createResponse(user);
-    }
-
-    public User createResponse(UserEntity user) {
-        return new User(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getFirstName(),
-                user.getLastName()
-        );
+        return mapper.toDomain(user);
     }
 }
